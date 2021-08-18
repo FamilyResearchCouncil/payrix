@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Account extends BaseResource
+class Account extends Resource
 {
 
 }

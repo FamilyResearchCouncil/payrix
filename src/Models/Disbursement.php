@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Disbursement extends BaseResource
+class Disbursement extends Resource
 {
 
 }

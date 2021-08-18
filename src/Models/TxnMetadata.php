@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class TxnMetadata extends BaseResource
+class TxnMetadata extends Resource
 {
 
 }

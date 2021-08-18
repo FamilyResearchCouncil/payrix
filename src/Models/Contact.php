@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Contact extends BaseResource
+class Contact extends Resource
 {
 
 }

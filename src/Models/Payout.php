@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Payout extends BaseResource
+class Payout extends Resource
 {
 
 }

@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Plan extends BaseResource
+class Plan extends Resource
 {
 
 }

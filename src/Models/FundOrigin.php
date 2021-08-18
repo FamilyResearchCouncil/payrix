@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class FundOrigin extends BaseResource
+class FundOrigin extends Resource
 {
 
 }

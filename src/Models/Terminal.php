@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Terminal extends BaseResource
+class Terminal extends Resource
 {
 
 }

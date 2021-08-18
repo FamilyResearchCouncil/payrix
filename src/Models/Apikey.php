@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Apikey extends BaseResource
+class Apikey extends Resource
 {
 
 }

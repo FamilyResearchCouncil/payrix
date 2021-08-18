@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Login extends BaseResource
+class Login extends Resource
 {
 
 }

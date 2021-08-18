@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class TxnData extends BaseResource
+class TxnData extends Resource
 {
 
 }

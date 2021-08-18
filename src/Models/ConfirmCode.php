@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class ConfirmCode extends BaseResource
+class ConfirmCode extends Resource
 {
 
 }

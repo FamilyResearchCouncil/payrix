@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class AlertAction extends BaseResource
+class AlertAction extends Resource
 {
 
 }

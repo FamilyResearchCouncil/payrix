@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class AggregationResult extends BaseResource
+class AggregationResult extends Resource
 {
 
 }

@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class ChargebackDocument extends BaseResource
+class ChargebackDocument extends Resource
 {
 
 }

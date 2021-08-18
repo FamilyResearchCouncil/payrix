@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class AccountVerification extends BaseResource
+class AccountVerification extends Resource
 {
 
 }

@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Message extends BaseResource
+class Message extends Resource
 {
 
 }

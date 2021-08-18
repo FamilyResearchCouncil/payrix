@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Token extends BaseResource
+class Token extends Resource
 {
 
 }

@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class ReportResult extends BaseResource
+class ReportResult extends Resource
 {
 
 }

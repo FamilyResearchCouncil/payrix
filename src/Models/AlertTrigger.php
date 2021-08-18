@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class AlertTrigger extends BaseResource
+class AlertTrigger extends Resource
 {
 
 }

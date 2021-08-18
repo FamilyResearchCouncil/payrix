@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class EntityReturn extends BaseResource
+class EntityReturn extends Resource
 {
 
 }

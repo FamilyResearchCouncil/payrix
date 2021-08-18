@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class NoteDocument extends BaseResource
+class NoteDocument extends Resource
 {
 
 }

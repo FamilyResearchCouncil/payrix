@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class PaymentUpdate extends BaseResource
+class PaymentUpdate extends Resource
 {
 
 }

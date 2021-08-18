@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Subscription extends BaseResource
+class Subscription extends Resource
 {
 
 }

@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Iplist extends BaseResource
+class Iplist extends Resource
 {
 
 }

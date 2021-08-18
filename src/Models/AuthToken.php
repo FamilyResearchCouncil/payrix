@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class AuthToken extends BaseResource
+class AuthToken extends Resource
 {
 
 }

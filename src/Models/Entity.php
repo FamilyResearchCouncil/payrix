@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Entity extends BaseResource
+class Entity extends Resource
 {
 
 }

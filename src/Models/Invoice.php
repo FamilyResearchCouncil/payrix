@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Invoice extends BaseResource
+class Invoice extends Resource
 {
 
 }

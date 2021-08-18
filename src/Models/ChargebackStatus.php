@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class ChargebackStatus extends BaseResource
+class ChargebackStatus extends Resource
 {
 
 }

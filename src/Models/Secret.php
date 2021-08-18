@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Secret extends BaseResource
+class Secret extends Resource
 {
 
 }

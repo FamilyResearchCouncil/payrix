@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Alert extends \Frc\Payrix\Models\BaseResource
+class Alert extends \Frc\Payrix\Models\Resource
 {
 
 }

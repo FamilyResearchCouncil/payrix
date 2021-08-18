@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class EntityData extends BaseResource
+class EntityData extends Resource
 {
     protected static $uri = 'entityDatas';
 }

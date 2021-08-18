@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Adjustment extends BaseResource
+class Adjustment extends Resource
 {
 
 }

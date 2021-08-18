@@ -2,7 +2,7 @@
 
 use Frc\Payrix\Models\Concerns\HasAttributes;
 
-class Report extends BaseResource
+class Report extends Resource
 {
 
 }

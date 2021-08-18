@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class DecisionRule extends BaseResource
+class DecisionRule extends Resource
 {
 
 }

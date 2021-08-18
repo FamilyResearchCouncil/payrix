@@ -1,6 +1,6 @@
 <?php namespace Frc\Payrix\Models;
 
-class Transaction extends BaseResource
+class Transaction extends Resource
 {
     public $expand = [
         'payment',

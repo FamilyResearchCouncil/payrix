@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Mapping extends BaseResource
+class Mapping extends Resource
 {
 
 }

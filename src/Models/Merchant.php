@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Merchant extends BaseResource
+class Merchant extends Resource
 {
 
 }

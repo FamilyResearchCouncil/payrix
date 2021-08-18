@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Session extends BaseResource
+class Session extends Resource
 {
 
 }

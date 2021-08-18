@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Batch extends BaseResource
+class Batch extends Resource
 {
 
 }

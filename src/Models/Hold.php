@@ -2,7 +2,7 @@
 
 namespace Frc\Payrix\Models;
 
-class Hold extends BaseResource
+class Hold extends Resource
 {
 
 }

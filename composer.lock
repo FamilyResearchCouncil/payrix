@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9683fc6140a2e0f541abba1250916129",
+    "content-hash": "1d7e3331aa6d0836e13a2fd9f8431890",
     "packages": [
         {
             "name": "brick/math",
@@ -1423,42 +1423,6 @@
                 "source": "https://github.com/opis/closure/tree/3.6.2"
             },
             "time": "2021-04-09T13:42:10+00:00"
-        },
-        {
-            "name": "payrix/payrix-php",
-            "version": "v2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://gitlab.com/payrix/public/payrix-php.git",
-                "reference": "4b40ad457a5cdbddb384b4d8f2c62d8d8c04ce68"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/payrix%2Fpublic%2Fpayrix-php/repository/archive.zip?sha=4b40ad457a5cdbddb384b4d8f2c62d8d8c04ce68",
-                "reference": "4b40ad457a5cdbddb384b4d8f2c62d8d8c04ce68",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-openssl": "*",
-                "php": ">=5.4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PayrixPHP\\": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "PayrixPHP PHP SDK package",
-            "homepage": "https://portal.payrix.com",
-            "support": {
-                "issues": "https://gitlab.com/api/v4/projects/20916009/issues"
-            },
-            "time": "2020-09-03T11:26:52+00:00"
         },
         {
             "name": "phpoption/phpoption",

@@ -1,0 +1,29 @@
+{
+  "name": "frc/payrix",
+  "description": "Payrix api library for laravel apps",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Ethan Brace",
+      "email": "eab@frc.org"
+    }
+  ],
+  "require": {
+    "illuminate/support": "^8.0",
+    "laravel/framework": "^8.0",
+    "payrix/payrix-php": "v2.0.0",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Frc\\Payrix\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Frc\\Payrix\\PayrixServiceProvider"
+      ]
+    }
+  }
+}

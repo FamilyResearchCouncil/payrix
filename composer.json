@@ -9,9 +9,7 @@
     }
   ],
   "require": {
-    "illuminate/support": "^8.0",
     "laravel/framework": "^8.0",
-    "payrix/payrix-php": "v2.0.0",
     "ext-json": "*"
   },
   "autoload": {

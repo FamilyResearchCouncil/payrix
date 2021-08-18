@@ -1,4 +1,4 @@
-<?php namespace Frc\Payrix;
+<?php namespace Frc\Payrix\Exceptions;
 
 use RuntimeException;
 

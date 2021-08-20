@@ -1,69 +1,96 @@
 <?php namespace Frc\Payrix;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use PayrixPHP\accounts;
-use PayrixPHP\BaseResource;
-use PayrixPHP\Exceptions\ApiErrors;
-use PayrixPHP\Http\Response;
-use PayrixPHP\txns;
-use PayrixPHP\Utilities\Config;
+use Frc\Payrix\Exceptions\ResourceNotFoundException;
+use Frc\Payrix\Http\Client;
+use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Support\Stringable;
 
 /**
- * @method transactions($args = null)
- * @method disbursements($id = null)
- * @method payouts($id = null)
- * @method terminalTxns(array $array)
- *
  * Class Payrix
  * @package Frc\Payrix
- * @mixin BaseResource
+ * @mixin PendingRequest
  */
 class Payrix
 {
     protected string $account_name;
-    protected Collection $config;
+    /**
+     * @var mixed
+     */
+    private $path;
 
     public function __construct($account_name = 'default')
     {
-        $this->account_name = $account_name;
-        $this->config = collect(config("payrix.accounts.$account_name"));
+        $this->setConnection($account_name);
+    }
 
-        Config::setApiKey($this->config->get('api-key'));
+    /**
+     * @param $account_name
+     * @return Payrix
+     */
+    public static function connection($account_name)
+    {
+        $instance = new static;
+
+        $instance->setConnection($account_name);
+
+        return $instance;
+    }
+
+    public function __call($method, $args)
+    {
+        // pull the first argument into a collection
+        $path = \Str::of(array_shift($args))->explode("/")->filter();
+
+        /** @var \Frc\Payrix\Models\Resource $class */
+        if (!$class = static::getResourceClass($path->first())) {
+            throw new ResourceNotFoundException("Could not determine the endpoint to use for the given path: '{$path->join("/")}'");
+        }
+
+        // call the http method on the given class using the current account connection
+        return $class::connection($this)->$method($path->join("/"), ...$args);
+
+    }
+
+    public static function __callStatic(string $name, array $arguments)
+    {
+        return (new static())->$name(...$arguments);
     }
 
 
-    public function __call($name, $args)
+    public function client($resource)
     {
-        $object = $this->getPayrixObject($name);
-
-        try {
-            \Log::channel('api')->info("payrix/$name", $args);
-            $response = $object->retrieve(...$args);
-        } catch (ApiErrors $e) {
-
-            $errors = json_encode([
-                'errors' => $object->getErrors(),
-            ], JSON_PRETTY_PRINT);
-
-            throw new ApiErrors($errors);
-
-        }
-
-        return $object->getResponse();
+        return new Client($resource);
     }
 
-    public function getPayrixObject($object_name): BaseResource
+
+    public static function getResourceClass($path)
     {
-        $class_override = (string)\Str::of($object_name)->singular()->title()->prepend('\Frc\Payrix\Models\\');
-        if (class_exists($class_override)) {
-            return new $class_override();
+        return collect(scandir(__DIR__ . "/Models"))->mapInto(Stringable::class)
+            // exclude dir refs
+            ->filter(fn($v) => !$v->is(['.', '..']))
+            // make full class nae
+            ->map(fn($v) => (string)$v->replaceLast('.php', '')->prepend('Frc\Payrix\Models\\'))
+            // remove directories
+            ->filter(fn($v) => class_exists($v))
+            // set up uri as key
+            ->mapWithKeys(fn($class) => [$class::uri() => $class])
+            // override from config file
+            ->merge(collect(config('payrix.resources')))
+            // get the first entry matching the current path
+            ->first(fn($v, $k) => $path === $k);
+    }
+
+    public function setConnection($connection)
+    {
+        $this->account_name = $connection;
+    }
+
+    public function config($key = null)
+    {
+        if (is_null($key)) {
+            return config("payrix.accounts.$this->account_name");
         }
 
-        $name = Arr::get(\Frc\Payrix\Models\BaseResource::CLASS_MAP, $object_name, $object_name);
-
-        $class = "\PayrixPHP\\$name";
-
-        return new $class();
+        return config("payrix.accounts.$this->account_name.$key");
     }
 }

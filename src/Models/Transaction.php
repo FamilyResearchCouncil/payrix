@@ -1,11 +1,6 @@
 <?php namespace Frc\Payrix\Models;
 
-class Transaction extends Resource
+class Transaction extends Txn
 {
-    public $expand = [
-        'payment',
-        'fortxn',
-        'fromtxn',
-        'samePaymentTxns'
-    ];
+
 }

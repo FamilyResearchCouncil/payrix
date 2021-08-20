@@ -14,8 +14,7 @@ use \PayrixPHP\Http\Request,
 abstract class Resource implements Arrayable
 {
     use HasAttributes;
-
-//    use ForwardsCalls;
+    use ForwardsCalls;
 
     protected static $uri;
 
@@ -24,24 +23,36 @@ abstract class Resource implements Arrayable
     public $page = 1;
     public $totals = [];
 
+    private $api_connection;
+    private $connection_name;
+
     public function __construct($attributes = [])
     {
         $this->fill($attributes);
     }
 
-    public static function uri()
+    /*******************************************************
+     * magic methods
+     ******************************************************/
+
+    public function __call($name, $arguments)
     {
-        return static::$uri ?? (string)\Str::of(class_basename(static::class))->pluralStudly()->camel();
+        return $this->forwardCallTo($this->newClient(), $name, $arguments);
     }
 
-
-    /**
-     * @param $connection
-     * @return \Illuminate\Http\Client\PendingRequest
-     */
-    public static function on($connection)
+    public static function __callStatic($name, $arguments)
     {
-        return Payrix::connection($connection)->http();
+        $attributes = is_array(reset($arguments))
+            ? \Arr::first($arguments)
+            : null;
+
+        $instance = new static($attributes ?? []);
+
+        $arguments = isset($attributes)
+            ? [$instance->attributesToArray()]
+            : $arguments;
+
+        return $instance->$name(...$arguments);
     }
 
 
@@ -59,6 +70,32 @@ abstract class Resource implements Arrayable
         return $this->getAttribute($name);
     }
 
+    /*******************************************************
+     * static methods
+     ******************************************************/
+
+    public static function uri()
+    {
+        return static::$uri ?? (string)\Str::of(class_basename(static::class))->pluralStudly()->camel();
+    }
+
+    /**
+     * @param $connection
+     * @return static
+     */
+    public static function connection($connection)
+    {
+        return tap(new static)->setApiConnection($connection);
+    }
+
+    /*******************************************************
+     * methods
+     ******************************************************/
+    public function throwsApiErrors()
+    {
+        return true;
+    }
+
     public function fill($attributes = [])
     {
         foreach ($attributes as $key => $value) {
@@ -68,19 +105,58 @@ abstract class Resource implements Arrayable
         return $this;
     }
 
-    public function usesTimestamps()
+    public function refresh()
     {
-        return false;
+        return $this->fill(
+            $this->newClient()->get($this->id)->getAttributes()
+        );
     }
 
-    public function getIncrementing()
+    public function getLogin()
     {
-        return false;
+        return Login::connection($this->getConnectionName())->get()->hydrate()->first();
     }
-
 
     public function toArray()
     {
         return $this->getAttributes();
     }
+
+    /**
+     * @param $connection
+     */
+    public function setApiConnection($connection)
+    {
+        $this->api_connection = is_string($connection) ? Payrix::connection($connection) : $connection;
+    }
+
+    public function getApiConnection()
+    {
+        return $this->api_connection ?? Payrix::connection($this->getConnectionName());
+    }
+
+
+    public function getConnectionName()
+    {
+        return $this->connection_name ?? config('payrix.default_account');
+    }
+
+    public function newClient()
+    {
+        return $this->getApiConnection()->client($this);
+    }
+
+    /*******************************************************
+     * attribute setters
+     ******************************************************/
+    /**
+     * Mutator for $this->connection_name
+     * @param $value
+     */
+    public function setConnectionNameAttribute($value)
+    {
+        $this->connection_name = $value;
+    }
+
+
 }

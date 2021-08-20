@@ -12,9 +12,19 @@
     "laravel/framework": "^8.0",
     "ext-json": "*"
   },
+  "require-dev": {
+    "pestphp/pest-plugin-laravel": "^1.1",
+    "pestphp/pest": "^1.16",
+    "orchestra/testbench": "^6.15"
+  },
   "autoload": {
     "psr-4": {
       "Frc\\Payrix\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Frc\\Payrix\\Tests\\": "tests"
     }
   },
   "extra": {

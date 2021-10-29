@@ -22,9 +22,19 @@ class PayrixServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->singleton('payrix', function () {
+            return new Payrix();
+        });
+
+        foreach (config('payrix.accounts') as $key => $config) {
+            $this->app->singleton("payrix.$key", function () use ($key) {
+                return new Payrix($key);
+            });
+        }
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/payrix.php' => config_path('payrix.php'),
+                __DIR__ . '/../config/payrix.php' => config_path('payrix.php'),
             ], 'payrix');
         }
     }

@@ -6,16 +6,9 @@ use Frc\Payrix\Http\PayrixApiException;
 use Frc\Payrix\Models\Concerns\HasAttributes;
 use Frc\Payrix\Payrix;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\ItemNotFoundException;
-use Illuminate\Support\MultipleItemsFoundException;
+use Illuminate\Collections\ItemNotFoundException;
+use Illuminate\Collections\MultipleItemsFoundException;
 use Illuminate\Support\Traits\ForwardsCalls;
-use \PayrixPHP\Http\Request,
-    \PayrixPHP\Http\Response,
-    \PayrixPHP\Http\RequestParams,
-    \PayrixPHP\Exceptions\InvalidRequest,
-    \PayrixPHP\Utilities\Config as Config;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use function PHPUnit\Framework\isNull;
 
 /**
  * @mixin Client
@@ -54,11 +47,11 @@ abstract class Resource implements Arrayable
      * @param $id
      * @return static|null
      */
-    public function find($id)
+    public static function find($id)
     {
         try {
-            return $this->get($id);
-        } catch (ItemNotFoundException|MultipleItemsFoundException $e) {
+            return (new static())->get($id);
+        } catch (ItemNotFoundException | MultipleItemsFoundException $e) {
             return null;
         }
     }
@@ -144,6 +137,8 @@ abstract class Resource implements Arrayable
 
     public function setAttribute($key, $value)
     {
+        // if the expand array has this key as it's key, then the value should be a
+        // resource class. Let's hydrate the value using that class..
         if (isset($this->expand[$key])) {
             return $this->expandValue($key, $value);
         }
@@ -196,7 +191,11 @@ abstract class Resource implements Arrayable
 
         $resource = $this->getExpandResource($key);
 
-        $value = $resource::find($value);
+        if (is_string($value)) {
+            $value = $resource::find($value);
+        } else if (is_array($value)) {
+            $value = new $resource($value);
+        }
 
         $this->attributes[$key] = $value;
 
@@ -255,29 +254,6 @@ abstract class Resource implements Arrayable
     public function setConnectionNameAttribute($value)
     {
         $this->connection_name = $value;
-    }
-
-    public function getQueryArgs()
-    {
-        // To retrieve nested objects and return them as part of the response,
-        // use the 'expand' parameter. The parameter name that you specify determines the resources to return.
-        // For example, set '?expand[login][]' to return a nested login resource.
-        // The expand parameter is available on all GET requests.
-        //
-        // Insert an empty bracket [] when expanding nested objects in an expanded array.
-        // Example: '?expand[orgEntities][][org][]'
-        return collect($this->expand)
-            ->map(function ($i) {
-                $value = \Str::of($i)->explode(".")
-                    ->map(function ($i) {
-                        return "[$i]";
-                    })
-                    ->filter()
-                    ->join('[]');
-
-                return "expand{$value}[]";
-            })
-            ->join('&');
     }
 
     /**

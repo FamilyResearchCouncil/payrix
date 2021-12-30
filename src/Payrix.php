@@ -6,11 +6,12 @@ use Frc\Payrix\Models\Resource;
 use Frc\Payrix\Models\Transaction;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
-use Str;
 
 /**
  * @method Transaction transactions
+ * @method Transaction txns
  *
  * Class Payrix
  * @package Frc\Payrix
@@ -43,20 +44,27 @@ class Payrix
     }
 
 
-    public function __call($method, $args)
+    /**
+     *
+     * @param $method_name
+     * @param $args
+     * @return Resource
+     * @throws ResourceNotFoundException
+     */
+    public function __call($method_name, $args)
     {
         // if this is the base resource, determine with endpoint we're using
         if (self::class === static::class) {
 
-            preg_match("/^(?'verb'get|post|put|patch|delete)(?'method'\w*)$/", $method, $matches);
+            preg_match("/^(?'verb'get|post|put|patch|delete)(?'method'\w*)$/", $method_name, $matches);
 
             $matches = collect($matches);
 
-            $method = (string)Str::of($matches->get('method', $method))->camel();
+            $method_name = (string)Str::of($matches->get('method', $method_name))->camel();
 
             // the method being called should correspond to one of the payrix resources
-            if (!$class = static::getClassFromUri($method)) {
-                throw new ResourceNotFoundException("Could not determine the endpoint to use for: '$method'");
+            if (!$class = static::getClassFromUri($method_name)) {
+                throw new ResourceNotFoundException("Could not determine the endpoint to use for: '$method_name'");
             }
 
             $resource = $class::connection($this);
@@ -69,7 +77,7 @@ class Payrix
         }
 
         // this is an endpoint resource
-        return $this->$method(...$args);
+        return $this->$method_name(...$args);
     }
 
     public static function __callStatic(string $name, array $arguments)
@@ -108,7 +116,7 @@ class Payrix
             $class = get_class($class);
         }
 
-        return (string)\Str::of(class_basename($class))
+        return (string)Str::of(class_basename($class))
             ->pluralStudly()
             ->camel();
     }

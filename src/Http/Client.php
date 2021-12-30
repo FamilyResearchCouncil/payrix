@@ -141,7 +141,8 @@ class Client
 
     public function buildRequest(): PendingRequest
     {
-        return Http::baseUrl(config('payrix.base_url'))
+        return (new \Frc\Payrix\Http\PendingRequest())
+            ->baseUrl(config('payrix.base_url'))
             ->asJson()
             ->withHeaders([
                 'APIKEY' => $this->resource->getApiConnection()->config('api-key')
@@ -159,7 +160,9 @@ class Client
 
     private function getQuery()
     {
-        return array_merge($this->query, parse_query($this->resourceQueryArgs()));
+        $this->query['expand'] = $this->resource->expand;
+
+        return $this->query;
     }
 
     private function getPath()
@@ -176,8 +179,4 @@ class Client
         return "$path";
     }
 
-    private function resourceQueryArgs()
-    {
-        return $this->resource->getQueryArgs();
-    }
 }

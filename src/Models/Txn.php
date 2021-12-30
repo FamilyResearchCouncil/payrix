@@ -7,10 +7,18 @@ class Txn extends Resource
     protected static $uri = 'txns';
 
     public $expand = [
-//        'payment' => Payment::class,
+//        'payment',
+        'payment.bin',
+        'merchant',
+        'txnResults',
+        'txnDatas',
+        'txnMetadatas',
+        'token',
+        'batch',
+        'txnRefs',
         'fortxn'  => Txn::class,
         'fromtxn' => Txn::class,
-//        'samePaymentTxns',
+        'samePaymentTxns',
     ];
 
 }
